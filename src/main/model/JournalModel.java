@@ -2,13 +2,14 @@ package model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
-// Represents a calendar model that holds all entries in a list
-public class CalendarModel {
-    private ArrayList<Entry> entryList;
+// Represents a journal model that holds all entries in a list
+public class JournalModel {
+    private List<Entry> entryList;
 
     // EFFECTS: constructs empty entry list
-    public CalendarModel() {
+    public JournalModel() {
         entryList = new ArrayList<>();
     }
 
@@ -27,14 +28,15 @@ public class CalendarModel {
 
 
     // MODIFIES: this
-    // EFFECTS: deletes the entry from entryList with the given date
-    public void deleteEntry(LocalDate date) {
+    // EFFECTS: if an entry with the given date is found, delete entry and return true; otherwise, return false
+    public boolean deleteEntry(LocalDate date) {
         for (Entry e : entryList) {
             if (e.getDate().compareTo(date) == 0) {
                 entryList.remove(e);
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     // MODIFIES: this
@@ -58,5 +60,9 @@ public class CalendarModel {
         return entryList.contains(entry);
     }
 
+    // EFFECTS: returns entryList
+    public List<Entry> getEntryList() {
+        return this.entryList;
+    }
 
 }

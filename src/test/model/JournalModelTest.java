@@ -7,15 +7,15 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CalendarModelTest {
-    private CalendarModel testEntryList;
+public class JournalModelTest {
+    private JournalModel testEntryList;
     private Entry testEntry1;
     private Entry testEntry2;
     private Entry testEntry3;
 
     @BeforeEach
     void runBefore() {
-        testEntryList = new CalendarModel();
+        testEntryList = new JournalModel();
         testEntry1 = new Entry("Good Day", "I got ice cream", LocalDate.of(2023, 2, 22));
         testEntry2 = new Entry("Ok Day", "It was ok", LocalDate.of(2023, 2, 23));
         testEntry3 = new Entry("Crazy Day", "!!!", LocalDate.of(2023, 2, 24));
@@ -69,17 +69,17 @@ public class CalendarModelTest {
         assertEquals(3, testEntryList.length());
 
         // delete one entry
-        testEntryList.deleteEntry(LocalDate.of(2023, 2, 22));
+        assertTrue(testEntryList.deleteEntry(LocalDate.of(2023, 2, 22)));
         assertEquals(2, testEntryList.length());
         assertFalse(testEntryList.contains(testEntry1));
 
         // attempt to delete an entry but given date does not correspond to any entry
-        testEntryList.deleteEntry(LocalDate.of(2023, 3, 22));
+        assertFalse(testEntryList.deleteEntry(LocalDate.of(2023, 3, 22)));
         assertEquals(2, testEntryList.length());
 
         // delete multiple entries until empty
-        testEntryList.deleteEntry(LocalDate.of(2023, 2, 23));
-        testEntryList.deleteEntry(LocalDate.of(2023, 2, 24));
+        assertTrue(testEntryList.deleteEntry(LocalDate.of(2023, 2, 23)));
+        assertTrue(testEntryList.deleteEntry(LocalDate.of(2023, 2, 24)));
         assertEquals(0, testEntryList.length());
     }
 
@@ -100,6 +100,16 @@ public class CalendarModelTest {
 
         assertEquals(3, testEntryList.length());
 
+    }
+
+    @Test
+    void testGetEntryList() {
+        assertEquals(0, testEntryList.getEntryList().size());
+        assertTrue(testEntryList.addEntry(testEntry1));
+        assertTrue(testEntryList.addEntry(testEntry2));
+        assertEquals(2, testEntryList.getEntryList().size());
+        assertTrue(testEntryList.getEntryList().contains(testEntry1));
+        assertTrue(testEntryList.getEntryList().contains(testEntry2));
     }
 
 
