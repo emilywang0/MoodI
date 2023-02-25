@@ -23,5 +23,5 @@ representation of their emotional well-being at the end of the month to look bac
 ## User Stories
 - As a user, I want to be able to add a journal entry with a title and date.
 - As a user, I want to be able to select an emotion tag for each entry (Ex. happy, sad, angry)
-- As a user, I want to be able to view all entry titles and emotion tags in a calendar format
+- As a user, I want to be able to view all entry titles and emotion tags
 - As a user, I want to be able to access and read previous journal entries
