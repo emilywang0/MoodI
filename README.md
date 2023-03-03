@@ -25,3 +25,7 @@ representation of their emotional well-being at the end of the month to look bac
 - As a user, I want to be able to select an emotion tag for each entry (Ex. happy, sad, angry)
 - As a user, I want to be able to view all entry titles and emotion tags
 - As a user, I want to be able to access and read previous journal entries
+
+- As a user, when I select close journal, I want to be reminded to save all journal entries to file and have the option
+to do so or not
+- As a user, when I start the application, I want to be given the option to load my journal entries from file
