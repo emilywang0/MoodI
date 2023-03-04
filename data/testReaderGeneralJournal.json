@@ -1,0 +1,22 @@
+{
+  "entries": [
+    {
+      "date": "2023-02-23",
+      "text": "It was sad",
+      "tag": {
+        "emotion": "sad",
+        "color": "-10050561"
+      },
+      "title": "Sad"
+    },
+    {
+      "date": "2023-02-22",
+      "text": "It was good",
+      "tag": {
+        "emotion": "happy",
+        "color": "-6684775"
+      },
+      "title": "Good"
+    }
+  ]
+}

@@ -180,7 +180,7 @@ public class JournalApp {
 
     // EFFECTS: displays all existing entries
     private void doViewAll() {
-        for (Entry e: this.journal.getEntryList()) {
+        for (Entry e : this.journal.getEntryList()) {
 
             String date = e.getDate().toString();
             String title = e.getTitle();
