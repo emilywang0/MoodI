@@ -1,14 +1,18 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 // Represents a journal model that holds all entries in a list
-public class JournalModel {
+public class JournalModel implements Writable {
     private List<Entry> entryList;
 
-    // EFFECTS: constructs empty entry list
+    // EFFECTS: constructs a journal model with an empty entry list
     public JournalModel() {
         entryList = new ArrayList<>();
     }
@@ -65,4 +69,24 @@ public class JournalModel {
         return this.entryList;
     }
 
+    // EFFECTS: returns journal entries as a JSONObject
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("entries", entriesToJson());
+        return json;
+    }
+
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray entriesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Entry e : entryList) {
+            jsonArray.put(e.toJson());
+        }
+
+        return jsonArray;
+    }
 }
+
+

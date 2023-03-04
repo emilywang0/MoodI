@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 import java.awt.*;
 
 // Represents a tag having an emotion and associated color
@@ -35,6 +37,14 @@ public class Tag {
         return color;
     }
 
+    // EFFECTS: converts Tag object to a JSONObject
+    public JSONObject toJsonTag() {
+        JSONObject tagJson = new JSONObject();
+        tagJson.put("emotion", emotion);
+        tagJson.put("color", String.valueOf(color.getRGB()));
+        return tagJson;
+    }
+
     // EFFECTS: returns default tag 1, happy emotion with green color
     public static Tag happyTag() {
         Tag happyTag = new Tag("happy", new Color(153, 255, 153));
@@ -52,6 +62,7 @@ public class Tag {
         Tag angryTag = new Tag("angry", new Color(255, 102, 102));
         return angryTag;
     }
+
 
 
 }

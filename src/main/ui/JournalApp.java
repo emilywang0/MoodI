@@ -3,25 +3,37 @@ package ui;
 import model.JournalModel;
 import model.Entry;
 import model.Tag;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 // Journal application
 public class JournalApp {
+    private static final String JSON_STORE = "./data/journal.json";
     private JournalModel journal;
     private Scanner input;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+    private boolean changed = false;
 
-    // EFFECTS: constructs journal app
-    public JournalApp() {
-
+    // EFFECTS: constructs journal app and runs application
+    public JournalApp() throws FileNotFoundException {
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        runJournal();
     }
 
     // MODIFIES: this
     // EFFECTS: processes user input
     public void runJournal() {
         boolean keepGoing = true;
+
         String command = null;
 
         init();
@@ -32,9 +44,18 @@ public class JournalApp {
             command = command.toLowerCase();
 
             if (command.equals("x")) {
+                if (changed) {
+                    System.out.println("You've made changes to your journal. Save those changes? (y/n)");
+                    String confirmCommand = input.nextLine();
+                    confirmCommand = confirmCommand.toLowerCase();
+                    if (confirmCommand.equals("y")) {
+                        saveJournal();
+                        changed = false;
+                    }
+                }
                 keepGoing = false;
             } else {
-                processCommand(command);
+                processCommand(command, input);
             }
         }
         System.out.println("\nCome back tomorrow! :)");
@@ -43,7 +64,7 @@ public class JournalApp {
 
     // MODIFIES: this
     // EFFECTS: processes user command
-    private void processCommand(String command) {
+    private void processCommand(String command, Scanner input) {
         if (command.equals("a")) {
             doAdd();
         } else if (command.equals("d")) {
@@ -52,6 +73,18 @@ public class JournalApp {
             doViewAll();
         } else if (command.equals("o")) {
             doOpenDetails();
+        } else if (command.equals("s")) {
+            saveJournal();
+        } else if (command.equals("l")) {
+            loadJournal(input);
+        } else if (command.equals("e")) {
+            System.out.println("WARNING: Are you sure you want to permanently delete this file? (y/n)");
+            String confirmCommand = input.nextLine();
+            confirmCommand = confirmCommand.toLowerCase();
+            if (confirmCommand.equals("y")) {
+                eraseJournal();
+                changed = false;
+            }
         } else {
             System.out.println("Sorry, please try another command! :)");
         }
@@ -72,6 +105,9 @@ public class JournalApp {
         System.out.println("\td -> Delete journal entry");
         System.out.println("\tv -> View all journal entries");
         System.out.println("\to -> Read a past journal entry");
+        System.out.println("\ts -> Save journal to file");
+        System.out.println("\tl -> Load journal from file");
+        System.out.println("\te -> Erase journal from file");
         System.out.println("\tx -> Close journal");
     }
 
@@ -99,6 +135,7 @@ public class JournalApp {
         selectTag(newEntry);
 
         this.journal.addEntry(newEntry);
+        changed = true;
         System.out.println("Successfully added journal entry. Glad you took some time to reflect on today!");
     }
 
@@ -135,6 +172,7 @@ public class JournalApp {
         }
         if (journal.deleteEntry(date)) {
             System.out.println("Successfully deleted entry.");
+            changed = true;
         } else {
             System.out.println("Could not find entry with given date.");
         }
@@ -177,4 +215,48 @@ public class JournalApp {
         }
     }
 
+    // EFFECTS: saves the journal to file
+    private void saveJournal() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(journal);
+            jsonWriter.close();
+            changed = false;
+            System.out.println("Saved to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads journal from file
+    private void loadJournal(Scanner input) {
+        try {
+            if (changed) {
+                System.out.println("Save current changes before loading journal? (y/n)");
+                String confirmCommand = input.nextLine();
+                confirmCommand = confirmCommand.toLowerCase();
+                if (confirmCommand.equals("y")) {
+                    saveJournal();
+                    changed = false;
+                }
+            }
+            journal = jsonReader.read();
+            System.out.println("Loaded from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: erases journal from file
+    private void eraseJournal() {
+        File file = new File(JSON_STORE);
+        if (file.delete()) {
+            journal.getEntryList().clear();
+            System.out.println("Deleted journal successfully");
+        } else {
+            System.out.println("Failed to delete the journal");
+        }
+    }
 }

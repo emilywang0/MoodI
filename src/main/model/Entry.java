@@ -1,10 +1,13 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.time.LocalDate;
 
 
 // Represents a journal entry with a title, tag, date, and text
-public class Entry {
+public class Entry implements Writable {
     private String title;
     private String text;
     private LocalDate date;
@@ -70,4 +73,14 @@ public class Entry {
         return this.tag != null;
     }
 
+    // EFFECTS: returns an entry as a JSONObject
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("title", title);
+        json.put("text", text);
+        json.put("date", date);
+        json.put("tag", tag.toJsonTag());
+        return json;
+    }
 }
