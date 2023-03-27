@@ -87,6 +87,7 @@ public class JournalModel implements Writable {
 
         return jsonArray;
     }
+
 }
 
 

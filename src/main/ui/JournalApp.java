@@ -16,14 +16,17 @@ import java.util.Scanner;
 // Journal application
 public class JournalApp {
     private static final String JSON_STORE = "./data/journal.json";
-    private JournalModel journal;
+
+    private JournalModel journalModel;
     private Scanner input;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private boolean changed = false;
+    private JournalFrame journalFrame;
 
     // EFFECTS: constructs journal app and runs application
     public JournalApp() throws FileNotFoundException {
+        journalFrame = new JournalFrame(this);
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         runJournal();
@@ -93,7 +96,7 @@ public class JournalApp {
     // MODIFIES: this
     // EFFECTS: initializes accounts
     private void init() {
-        journal = new JournalModel();
+        journalModel = new JournalModel();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
     }
@@ -134,7 +137,7 @@ public class JournalApp {
         System.out.println("\t3 -> angry");
         selectTag(newEntry);
 
-        this.journal.addEntry(newEntry);
+        this.journalModel.addEntry(newEntry);
         changed = true;
         System.out.println("Successfully added journal entry. Glad you took some time to reflect on today!");
     }
@@ -170,7 +173,7 @@ public class JournalApp {
             System.out.println("Not a valid date, try again.");
             return;
         }
-        if (journal.deleteEntry(date)) {
+        if (journalModel.deleteEntry(date)) {
             System.out.println("Successfully deleted entry.");
             changed = true;
         } else {
@@ -180,7 +183,7 @@ public class JournalApp {
 
     // EFFECTS: displays all existing entries
     private void doViewAll() {
-        for (Entry e : this.journal.getEntryList()) {
+        for (Entry e : this.journalModel.getEntryList()) {
 
             String date = e.getDate().toString();
             String title = e.getTitle();
@@ -200,8 +203,8 @@ public class JournalApp {
             System.out.println("Not a valid date, try again.");
             return;
         }
-        if (journal.getEntry(date) != null) {
-            Entry e = journal.getEntry(date);
+        if (journalModel.getEntry(date) != null) {
+            Entry e = journalModel.getEntry(date);
             String entryDate = e.getDate().toString();
             String title = e.getTitle();
             String text = e.getText();
@@ -216,21 +219,23 @@ public class JournalApp {
     }
 
     // EFFECTS: saves the journal to file
-    private void saveJournal() {
+    public boolean saveJournal() {
         try {
             jsonWriter.open();
-            jsonWriter.write(journal);
+            jsonWriter.write(journalModel);
             jsonWriter.close();
             changed = false;
             System.out.println("Saved to " + JSON_STORE);
+            return true;
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
+            return false;
         }
     }
 
     // MODIFIES: this
     // EFFECTS: loads journal from file
-    private void loadJournal(Scanner input) {
+    public void loadJournal(Scanner input) {
         try {
             if (changed) {
                 System.out.println("Save current changes before loading journal? (y/n)");
@@ -241,7 +246,7 @@ public class JournalApp {
                     changed = false;
                 }
             }
-            journal = jsonReader.read();
+            journalModel = jsonReader.read();
             System.out.println("Loaded from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
@@ -249,14 +254,35 @@ public class JournalApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: erases journal from file
-    private void eraseJournal() {
-        File file = new File(JSON_STORE);
-        if (file.delete()) {
-            journal.getEntryList().clear();
-            System.out.println("Deleted journal successfully");
-        } else {
-            System.out.println("Failed to delete the journal");
+    // EFFECTS: loads journal from file, adapted to work for JournalFrame
+    public boolean loadJournalFrame() {
+        try {
+            journalModel = jsonReader.read();
+            System.out.println("Loaded from " + JSON_STORE);
+            return true;
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+            return false;
         }
     }
+
+    // MODIFIES: this
+    // EFFECTS: erases journal from file
+    public boolean eraseJournal() {
+        File file = new File(JSON_STORE);
+        if (file.delete()) {
+            journalModel.getEntryList().clear();
+            System.out.println("Deleted journal successfully");
+            return true;
+        } else {
+            System.out.println("Failed to delete the journal");
+            return false;
+        }
+    }
+
+    // EFFECTS: returns journalModel
+    public JournalModel getJournalModel() {
+        return journalModel;
+    }
+
 }

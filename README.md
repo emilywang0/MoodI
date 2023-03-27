@@ -29,3 +29,14 @@ representation of their emotional well-being at the end of the month to look bac
 - As a user, when I select close journal or load journal, I want to be reminded to save all current changes to file 
 and have the option to do so or not
 - As a user, I want to be given the option to load my journal entries from file
+
+## Instructions for Grader
+- You can generate the 1st required action related to adding Xs to a Y by clicking the button "Add entry"
+- You can generate the 2nd required action by clicking the button "Find past entry", showing an entry's details by date
+- You can generate another action by clicking the button "Delete entry" which deletes a past entry by date
+- You can view all past entries added under "Your Journal Entries"
+- You can make sure all updates are displayed on the GUI after generating new actions by clicking the button "Refresh"
+- You can locate my visual component in the Calendar which highlights today's date, the MoodI logo, and the menu icons
+- You can save the state of my application by clicking the first button (floppy disk icon) on the top menu
+- You can reload the state of my application by clicking the second button (folder icon) on the top menu
+- You can delete the state of my application by clicking the third button (trash icon) on the top menu
