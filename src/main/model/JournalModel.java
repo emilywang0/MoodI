@@ -27,6 +27,7 @@ public class JournalModel implements Writable {
             }
         }
         entryList.add(newEntry);
+        EventLog.getInstance().logEvent(new Event("New entry added to journal"));
         return true;
     }
 
@@ -37,6 +38,7 @@ public class JournalModel implements Writable {
         for (Entry e : entryList) {
             if (e.getDate().compareTo(date) == 0) {
                 entryList.remove(e);
+                EventLog.getInstance().logEvent(new Event("Past entry deleted"));
                 return true;
             }
         }
@@ -48,7 +50,9 @@ public class JournalModel implements Writable {
     public Entry getEntry(LocalDate date) {
         for (Entry e : entryList) {
             if (e.getDate().compareTo(date) == 0) {
+                EventLog.getInstance().logEvent(new Event("Past entry viewed"));
                 return e;
+
             }
         }
         return null;

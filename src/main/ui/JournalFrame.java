@@ -1,13 +1,18 @@
 package ui;
 
 
+import model.Event;
+import model.EventLog;
+
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 // Journal GUI
-public class JournalFrame extends JFrame implements MenuListener {
+public class JournalFrame extends JFrame implements MenuListener, WindowListener {
 
     private JournalApp journalApp;
     private CalendarPanel calendar;
@@ -23,12 +28,15 @@ public class JournalFrame extends JFrame implements MenuListener {
     private ImageIcon loadIcon;
     private ImageIcon deleteIcon;
     private boolean changed;
+    private EventLog eventLog = EventLog.getInstance();
+
 
     // EFFECTS: constructs and sets up main window
     public JournalFrame(JournalApp journalApp) {
         super("MoodI");
         this.journalApp = journalApp;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowListener(this);
         setSize(500, 500);
         setUndecorated(false);
         this.getContentPane().setBackground(Color.WHITE);
@@ -55,7 +63,7 @@ public class JournalFrame extends JFrame implements MenuListener {
         displayPanel.setLayout(new GridLayout(0, 2));
 
         // 0-based indexing
-        calendar = new CalendarPanel(2, 2023);
+        calendar = new CalendarPanel(3, 2023);
         displayPanel.add(calendar);
 
         entryPanel = new EntryPanel(this);
@@ -189,6 +197,46 @@ public class JournalFrame extends JFrame implements MenuListener {
 
     }
 
+    // EFFECTS: specifies methods for opened window
+    @Override
+    public void windowOpened(WindowEvent e) {
 
+    }
 
+    // EFFECTS: specifies methods for closing window
+    @Override
+    public void windowClosing(WindowEvent e) {
+        for (Event event: eventLog) {
+            System.out.println(event);
+        }
+        System.exit(0);
+    }
+
+    // EFFECTS: prints EventLog to console when window is closed
+    @Override
+    public void windowClosed(WindowEvent e) {
+    }
+
+    // EFFECTS: specifies methods for iconified window
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    // EFFECTS: specifies methods for deiconified window
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    }
+
+    // EFFECTS: specifies methods for activated window
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    // EFFECTS: specifies methods for deactivated window
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
+    }
 }

@@ -40,3 +40,11 @@ and have the option to do so or not
 - You can save the state of my application by clicking the first button (floppy disk icon) on the top menu
 - You can reload the state of my application by clicking the second button (folder icon) on the top menu
 - You can delete the state of my application by clicking the third button (trash icon) on the top menu
+
+## Phase 4: Task 2
+Thu Apr 06 12:40:19 PDT 2023
+New entry added to journal
+Thu Apr 06 12:40:24 PDT 2023
+Past entry viewed
+Thu Apr 06 12:40:29 PDT 2023
+Past entry deleted

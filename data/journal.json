@@ -1,0 +1,29 @@
+{"entries": [
+    {
+        "date": "2004-04-16",
+        "text": "I had a great day today!",
+        "tag": {
+            "emotion": "happy",
+            "color": "-6684775"
+        },
+        "title": "Perfect Day"
+    },
+    {
+        "date": "2004-04-15",
+        "text": "Feeling a bit down",
+        "tag": {
+            "emotion": "sad",
+            "color": "-10050561"
+        },
+        "title": "Ok Day"
+    },
+    {
+        "date": "2004-04-17",
+        "text": "I am so mad today",
+        "tag": {
+            "emotion": "angry",
+            "color": "-39322"
+        },
+        "title": "Bad day"
+    }
+]}

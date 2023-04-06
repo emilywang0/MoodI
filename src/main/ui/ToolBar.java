@@ -66,7 +66,7 @@ public class ToolBar extends JPanel implements ActionListener {
         }
         if (e.getSource() == refreshButton) {
             update();
-            System.out.println("Refreshed");
+            //System.out.println("Refreshed");
         }
     }
 
@@ -171,16 +171,16 @@ public class ToolBar extends JPanel implements ActionListener {
             JOptionPane.showMessageDialog(frame, "Not a valid date, try again.");
             return;
         }
-        if (frame.getJournalApp().getJournalModel().getEntry(date) != null) {
-            showJournalDetails(date);
+        Entry entry = frame.getJournalApp().getJournalModel().getEntry(date);
+        if (entry != null) {
+            showJournalDetails(entry);
         } else {
             JOptionPane.showMessageDialog(frame,"Could not find entry with given date.");
         }
     }
 
     // EFFECTS: displays date, title, text, and tag of an entry with given date
-    private void showJournalDetails(LocalDate date) {
-        Entry e = frame.getJournalApp().getJournalModel().getEntry(date);
+    private void showJournalDetails(Entry e) {
         String entryDate = e.getDate().toString();
         String title = e.getTitle();
         String text = e.getText();
