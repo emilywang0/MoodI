@@ -48,3 +48,11 @@ Thu Apr 06 12:40:24 PDT 2023
 Past entry viewed
 Thu Apr 06 12:40:29 PDT 2023
 Past entry deleted
+
+## Phase 4: Task 3
+If I had more time to work on the project, I would probably refactor my entryList in JournalModel as a Map instead of a 
+List, because then I could set the entry's date as the Key and the entry itself as the Value. Many of my actions such
+as finding or deleting a past entry needs the user to provide a date, so it can iterate through entryList to find the 
+corresponding entry. If I used a Map, adding, removing, and finding an entry based on the date would be much faster and 
+effective, taking only O(1). I also do not want multiple entries for the same date, and since a key can only correspond 
+to one value, a Map could also prevent duplicates. 
